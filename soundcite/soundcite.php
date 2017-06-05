@@ -55,12 +55,12 @@ class Soundcite {
 		$config = [];
 
 		/**
-		 * Add the Soundcite (SoundCloud) Client ID to the configuration.
+		 * Add the SoundCloud Client ID to the configuration.
 		 * See https://soundcite.knightlab.com/ for instructions on obtaining an ID.
 		 *
 		 * @param string $client_id client id
 		 */
-		$client_id = apply_filters( 'soundcite_client_id', false );
+		$client_id = apply_filters( 'soundcloud_client_id', false );
 
 		$color_text = false;
 		if ( isset( $atts['color'] ) && $atts['color'] && preg_match( '/[0-9]{1,3},[0-9]{1,3},[0-9]{1,3}/', $atts['color'] ) ) {
