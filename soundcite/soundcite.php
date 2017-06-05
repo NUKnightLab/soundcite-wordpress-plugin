@@ -99,7 +99,7 @@ class Soundcite {
 			$options['extended_valid_elements'] = '';
 		}
 
-		$options['extended_valid_elements'] .= ',span[class|id|style|data-url|data-end|data-plays]';
+		$options['extended_valid_elements'] .= ',span[class|id|style|data-url|data-id|data-start|data-end|data-plays]';
 
 		return $options;
 	}
