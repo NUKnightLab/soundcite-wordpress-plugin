@@ -1,7 +1,13 @@
 <?php
-/**
- * Enable Soundcite embedding in WordPress
- */
+/*
+Plugin Name: Soundcite
+Plugin URI: https://github.com/NUKnightLab/soundcite-wordpress-plugin
+Description: Enable Soundcite embedding in WordPress
+Version: 0.1
+Author: Paul Schreiber
+Author URI: http://paulschreiber.com/
+*/
+
 class Soundcite {
 
 	public static function hooks() {
