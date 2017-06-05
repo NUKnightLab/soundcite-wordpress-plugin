@@ -114,6 +114,7 @@ class Soundcite {
 		$tags = array( 'span' );
 		$new_attributes = array(
 			'data-url' => true,
+			'data-id' => true,
 			'data-start' => true,
 			'data-end' => true,
 			'data-plays' => true,
