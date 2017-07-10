@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Knight Lab Soundcite
+Plugin Name: Knight Lab SoundciteJS
 Plugin URI: https://github.com/NUKnightLab/soundcite-wordpress-plugin
-Description: This plugin helps you use Knight Lab's Soundcite tool in Wordpress. See the "media" settings page for configuration options.
+Description: This plugin helps you use Knight Lab's SoundciteJS tool in Wordpress. See the "media" settings page for configuration options.
 Version: 0.1
 Author: Northwestern University Knight Lab and Paul Schreiber
 Author URI: http://knightlab.northwestern.edu
@@ -40,7 +40,7 @@ class Soundcite {
 
 				add_settings_section(
 					'soundcite_settings_section',
-					'Knight Lab Soundcite Settings',
+					'Knight Lab SoundciteJS Settings',
 					array( get_called_class(), 'settings_section_cb' ),
 					'media'
 				);
@@ -67,11 +67,11 @@ class Soundcite {
 	public static function settings_section_cb() {
 		?>
 
-		<p><strong>Please note</strong> SoundCloud imposes rate limits on streaming audio with third-party tools like Soundcite.
-			By default, all Soundcite users use the same <em>client ID</em>, which can
-		lead to cases where your Soundcite clips temporarily stop working. You can prevent this from happening by registering
+		<p><strong>Please note</strong> SoundCloud imposes rate limits on streaming audio with third-party tools like SoundciteJS.
+			By default, all SoundciteJS users use the same <em>client ID</em>, which can
+		lead to cases where your SoundciteJS clips temporarily stop working. You can prevent this from happening by registering
 		for your own free SoundCloud client ID and pasting it in the field below.</p>
-		<p>If you don't use SoundCloud to host your Soundcite audio, you can ignore this.</p>
+		<p>If you don't use SoundCloud to host your SoundciteJS audio, you can ignore this.</p>
 		<?php
 	}
 
@@ -159,7 +159,7 @@ class Soundcite {
 	}
 
 	/**
-	 * Allow data-xyz attributes on span tags; used for Soundcite
+	 * Allow data-xyz attributes on span tags; used for SoundciteJS
 	 * http://vip.wordpress.com/documentation/register-additional-html-attributes-for-tinymce-and-wp-kses/
 	 */
 	public static function kses_allow_span() {
