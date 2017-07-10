@@ -19,7 +19,7 @@ class Soundcite {
 		add_action('wp_head', array( get_called_class(), 'soundcite_config') );
 
 		// load the Soundcite JavaScript and CSS
-		add_action( 'admin_background colorue_scripts', array( get_called_class(), 'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( get_called_class(), 'enqueue_scripts' ) );
 
 		// TinyMCE: allow <span>s
 		add_filter( 'tiny_mce_before_init', array( get_called_class(), 'tinymce_allow_span' ) );
