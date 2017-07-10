@@ -1,29 +1,104 @@
 <?php
 /*
-Plugin Name: Soundcite
+Plugin Name: Knight Lab Soundcite
 Plugin URI: https://github.com/NUKnightLab/soundcite-wordpress-plugin
-Description: Enable Soundcite embedding in WordPress
+Description: This plugin helps you use Knight Lab's Soundcite tool in Wordpress. See the "media" settings page for configuration options.
 Version: 0.1
-Author: Paul Schreiber
-Author URI: http://paulschreiber.com/
+Author: Paul Schreiber and Northwestern University Knight Lab
+Author URI: http://knightlab.northwestern.edu
 */
+
+define( 'SOUNDCITE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) ); // All have trailing slash
+define( 'SOUNDCITE_PLUGIN_VERSION', '0.1');
+define( 'SOUNDCITE_PLUGIN_BASE_NAME', plugin_basename( __FILE__ ) );
 
 class Soundcite {
 
 	public static function hooks() {
-		// handle Soundcite shortcode
-		add_shortcode( 'soundcite', array( get_called_class(), 'shortcode_handler' ) );
+
+		add_action('wp_head', array( get_called_class(), 'soundcite_config') );
 
 		// load the Soundcite JavaScript and CSS
-		add_action( 'admin_enqueue_scripts', array( get_called_class(), 'enqueue_scripts' ) );
+		add_action( 'admin_background colorue_scripts', array( get_called_class(), 'enqueue_scripts' ) );
 
 		// TinyMCE: allow <span>s
 		add_filter( 'tiny_mce_before_init', array( get_called_class(), 'tinymce_allow_span' ) );
 
 		// KSES: Allow Soundcite data- attibutes on <span>s
 		add_action( 'init', array( get_called_class(), 'kses_allow_span' ) );
+
+
+		add_action('admin_init', array( get_called_class(), 'admin_init') );
+		// include_once( SOUNDCITE_PLUGIN_PATH . 'settings.php' );
+
 	}
 
+	public static function admin_init() {
+
+				register_setting( 'media', 'soundcite_soundcloud_client_id', 'sanitize_text_field' );
+				register_setting( 'media', 'soundcite_background_color', 'sanitize_hex_color' );
+
+				add_settings_section(
+					'soundcite_settings_section',
+					'Knight Lab Soundcite Settings',
+					array( get_called_class(), 'settings_section_cb' ),
+					'media'
+				);
+				add_settings_field(
+					'soundcite_soundcloud_client_id',
+		      'Sound Cloud Client ID',
+		      array( get_called_class(), 'soundcloud_field_cb'),
+		      'media',
+		      'soundcite_settings_section',
+		      array( 'label_for' => 'soundcite_soundcloud_client_id' ) );
+					add_settings_field(
+						'soundcite_background_color',
+			      'Background Color for Clips',
+			      array( get_called_class(), 'bgcolor_field_cb'),
+			      'media',
+			      'soundcite_settings_section',
+			      array( 'label_for' => 'soundcite_background_color' ) );
+
+
+
+
+	}
+
+	public static function settings_section_cb() {
+		?>
+
+		<p><strong>Please note</strong> SoundCloud imposes rate limits on streaming audio with third-party tools like Soundcite.
+			By default, all Soundcite users use the same <em>client ID</em>, which can
+		lead to cases where your Soundcite clips temporarily stop working. You can prevent this from happening by registering
+		for your own free SoundCloud client ID and pasting it in the field below.</p>
+		<p>If you don't use SoundCloud to host your Soundcite audio, you can ignore this.</p>
+		<?php
+	}
+
+	public static function soundcloud_field_cb() {
+		$setting = get_option('soundcite_soundcloud_client_id');
+    ?>
+    <input type="text" size="40" id="soundcite_soundcloud_client_id" name="soundcite_soundcloud_client_id" value="<?= isset($setting) ? esc_attr($setting) : ''; ?>">
+		<p>
+			<strong>How to get a SoundCloud client ID</strong>
+		</p>
+		<ul style="list-style-type: disc; padding-left: 3em;">
+	    <li>Go to <a href="https://developers.soundcloud.com/" target="_blank">https://developers.soundcloud.com/</a></li>
+	    <li>Click "Register a new application</li>
+	    <li>Fill in the application for and click "Register"</li>
+	    <li>Copy the "Client ID" field. This is your API key</li>
+	    <li>Be sure to save the app</li>
+		</ul>
+		<?php
+	}
+
+	public static function bgcolor_field_cb() {
+		$setting = get_option('soundcite_background_color');
+    ?>
+    <input type="text" size="10" id="soundcite_background_color" name="soundcite_background_color" value="<?= isset($setting) ? esc_attr($setting) : ''; ?>">
+		<p>Enter a CSS hex color (e.g. <em>#DF4E13</em>) to change the color of your clips. Transparency is always 15%.</p>
+		<?php
+	}
 	/**
 	 * Enqueue the Soundcite JS and CSS
 	 *
@@ -49,7 +124,7 @@ class Soundcite {
 	 * @param string $content Shortcode content
 	 * @return string empty string
 	 */
-	public static function shortcode_handler( $atts, $content = null ) {
+	public static function soundcite_config( $atts, $content = null ) {
 		self::enqueue_scripts();
 
 		$config = [];
@@ -60,13 +135,13 @@ class Soundcite {
 		 *
 		 * @param string $client_id client id
 		 */
-		$client_id = apply_filters( 'soundcloud_client_id', false );
+		$client_id = get_option('soundcite_soundcloud_client_id');
+		$color = get_option('soundcite_background_color');
 
-		$color_text = false;
-		if ( isset( $atts['color'] ) && $atts['color'] && preg_match( '/[0-9]{1,3},[0-9]{1,3},[0-9]{1,3}/', $atts['color'] ) ) {
-			$color = $atts['color'];
-		}
+		self::render_soundcite_config( $client_id, $color);
+	}
 
+	public static function render_soundcite_config( $client_id, $color) {
 		if ( $client_id || $color ) {
 			$script = 'var SOUNDCITE_CONFIG = {';
 
@@ -77,13 +152,13 @@ class Soundcite {
 				$script .= ',';
 			}
 			if ( $color ) {
-				$script .= "update_playing_element: function(el, percentage) { el.style.cssText = 'background: linear-gradient(to right, rgba($color,.15)' + percentage + '%, rgba($color,.05)' + (percentage + 1) + '%);';}\n";
+				$script .= "background_color: '$color'\n";
 			}
 
 			$script .= "};\n";
-
 			wp_add_inline_script( 'soundcite', $script );
 		}
+
 	}
 
 	/**
