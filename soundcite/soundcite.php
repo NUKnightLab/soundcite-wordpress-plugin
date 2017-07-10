@@ -27,10 +27,10 @@ class Soundcite {
 		// KSES: Allow Soundcite data- attibutes on <span>s
 		add_action( 'init', array( get_called_class(), 'kses_allow_span' ) );
 
-
+		// add section to settings / media
 		add_action('admin_init', array( get_called_class(), 'admin_init') );
-		// include_once( SOUNDCITE_PLUGIN_PATH . 'settings.php' );
 
+		add_filter( 'mce_css', array( get_called_class(), 'my_plugin_editor_style' ) );
 	}
 
 	public static function admin_init() {
@@ -99,11 +99,7 @@ class Soundcite {
 		<p>Enter a CSS hex color (e.g. <em>#DF4E13</em>) to change the color of your clips. Transparency is always 15%.</p>
 		<?php
 	}
-	/**
-	 * Enqueue the Soundcite JS and CSS
-	 *
-	 * @param string $hook The current admin page.
-	 */
+
 	public static function enqueue_scripts( $hook = null ) {
 		if ( is_admin() && ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
 			return;
@@ -113,28 +109,11 @@ class Soundcite {
 		wp_enqueue_style( 'soundcite', 'https://cdn.knightlab.com/libs/soundcite/latest/css/player.css' );
 	}
 
-	/**
-	 * Builds the Soundcite shortcode output and configuration output.
-	 *
-	 * @param array  $attr {
-	 *     Attributes of the soundcite shortcode.
-	 *
-	 *     @type string $color   rgb color values (0-255) triplet such as "123,45,25"
-	 * }
-	 * @param string $content Shortcode content
-	 * @return string empty string
-	 */
-	public static function soundcite_config( $atts, $content = null ) {
+	public static function soundcite_config( ) {
 		self::enqueue_scripts();
 
 		$config = [];
 
-		/**
-		 * Add the SoundCloud Client ID to the configuration.
-		 * See https://soundcite.knightlab.com/ for instructions on obtaining an ID.
-		 *
-		 * @param string $client_id client id
-		 */
 		$client_id = get_option('soundcite_soundcloud_client_id');
 		$color = get_option('soundcite_background_color');
 
@@ -200,6 +179,12 @@ class Soundcite {
 				$allowedposttags[ $tag ] = array_merge( $allowedposttags[ $tag ], $new_attributes );
 			}
 		}
+	}
+
+	public static function my_plugin_editor_style( $mce_css ) {
+		// https://shellcreeper.com/add-editor-style-from-plugin/
+		$mce_css .= ', ' . plugins_url( 'editor-style.css', __FILE__ );
+    return $mce_css;
 	}
 }
 
