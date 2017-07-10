@@ -4,7 +4,7 @@ Plugin Name: Knight Lab Soundcite
 Plugin URI: https://github.com/NUKnightLab/soundcite-wordpress-plugin
 Description: This plugin helps you use Knight Lab's Soundcite tool in Wordpress. See the "media" settings page for configuration options.
 Version: 0.1
-Author: Paul Schreiber and Northwestern University Knight Lab
+Author: Northwestern University Knight Lab and Paul Schreiber
 Author URI: http://knightlab.northwestern.edu
 */
 
