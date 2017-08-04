@@ -9,14 +9,14 @@ Author URI: http://knightlab.northwestern.edu
 */
 
 define( 'SOUNDCITE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) ); // All have trailing slash
-define( 'SOUNDCITE_PLUGIN_VERSION', '0.1');
+define( 'SOUNDCITE_PLUGIN_VERSION', '0.1' );
 define( 'SOUNDCITE_PLUGIN_BASE_NAME', plugin_basename( __FILE__ ) );
 
 class Soundcite {
 
 	public static function hooks() {
 
-		add_action('wp_head', array( get_called_class(), 'soundcite_config') );
+		add_action( 'wp_head', array( get_called_class(), 'soundcite_config' ) );
 
 		// load the Soundcite JavaScript and CSS
 		add_action( 'admin_enqueue_scripts', array( get_called_class(), 'enqueue_scripts' ) );
@@ -28,7 +28,7 @@ class Soundcite {
 		add_action( 'init', array( get_called_class(), 'kses_allow_span' ) );
 
 		// add section to settings / media
-		add_action('admin_init', array( get_called_class(), 'admin_init') );
+		add_action( 'admin_init', array( get_called_class(), 'admin_init' ) );
 
 		add_filter( 'mce_css', array( get_called_class(), 'my_plugin_editor_style' ) );
 	}
@@ -46,21 +46,18 @@ class Soundcite {
 				);
 				add_settings_field(
 					'soundcite_soundcloud_client_id',
-		      'Sound Cloud Client ID',
-		      array( get_called_class(), 'soundcloud_field_cb'),
-		      'media',
-		      'soundcite_settings_section',
-		      array( 'label_for' => 'soundcite_soundcloud_client_id' ) );
+					'Sound Cloud Client ID',
+					array( get_called_class(), 'soundcloud_field_cb' ),
+					'media',
+					'soundcite_settings_section',
+				array( 'label_for' => 'soundcite_soundcloud_client_id' ) );
 					add_settings_field(
 						'soundcite_background_color',
-			      'Background Color for Clips',
-			      array( get_called_class(), 'bgcolor_field_cb'),
-			      'media',
-			      'soundcite_settings_section',
-			      array( 'label_for' => 'soundcite_background_color' ) );
-
-
-
+						'Background Color for Clips',
+						array( get_called_class(), 'bgcolor_field_cb' ),
+						'media',
+						'soundcite_settings_section',
+					array( 'label_for' => 'soundcite_background_color' ) );
 
 	}
 
@@ -76,9 +73,9 @@ class Soundcite {
 	}
 
 	public static function soundcloud_field_cb() {
-		$setting = get_option('soundcite_soundcloud_client_id');
-    ?>
-    <input type="text" size="40" id="soundcite_soundcloud_client_id" name="soundcite_soundcloud_client_id" value="<?= isset($setting) ? esc_attr($setting) : ''; ?>">
+		$setting = get_option( 'soundcite_soundcloud_client_id' );
+	?>
+	<input type="text" size="40" id="soundcite_soundcloud_client_id" name="soundcite_soundcloud_client_id" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
 		<p>
 			<strong>How to get a SoundCloud client ID</strong>
 		</p>
@@ -93,9 +90,9 @@ class Soundcite {
 	}
 
 	public static function bgcolor_field_cb() {
-		$setting = get_option('soundcite_background_color');
-    ?>
-    <input type="text" size="10" id="soundcite_background_color" name="soundcite_background_color" value="<?= isset($setting) ? esc_attr($setting) : ''; ?>">
+		$setting = get_option( 'soundcite_background_color' );
+	?>
+	<input type="text" size="10" id="soundcite_background_color" name="soundcite_background_color" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
 		<p>Enter a CSS hex color (e.g. <em>#DF4E13</em>) to change the color of your clips. Transparency is always 15%.</p>
 		<?php
 	}
@@ -109,18 +106,18 @@ class Soundcite {
 		wp_enqueue_style( 'soundcite', 'https://cdn.knightlab.com/libs/soundcite/latest/css/player.css' );
 	}
 
-	public static function soundcite_config( ) {
+	public static function soundcite_config() {
 		self::enqueue_scripts();
 
 		$config = [];
 
-		$client_id = get_option('soundcite_soundcloud_client_id');
-		$color = get_option('soundcite_background_color');
+		$client_id = get_option( 'soundcite_soundcloud_client_id' );
+		$color = get_option( 'soundcite_background_color' );
 
-		self::render_soundcite_config( $client_id, $color);
+		self::render_soundcite_config( $client_id, $color );
 	}
 
-	public static function render_soundcite_config( $client_id, $color) {
+	public static function render_soundcite_config( $client_id, $color ) {
 		if ( $client_id || $color ) {
 			$script = 'var SOUNDCITE_CONFIG = {';
 
@@ -184,7 +181,7 @@ class Soundcite {
 	public static function my_plugin_editor_style( $mce_css ) {
 		// https://shellcreeper.com/add-editor-style-from-plugin/
 		$mce_css .= ', ' . plugins_url( 'editor-style.css', __FILE__ );
-    return $mce_css;
+		return $mce_css;
 	}
 }
 
