@@ -2,7 +2,7 @@
 /*
 Plugin Name: Knight Lab Soundcite
 Plugin URI: https://github.com/NUKnightLab/soundcite-wordpress-plugin
-Description: This plugin helps you use Knight Lab's Soundcite tool in Wordpress. See the "media" settings page for configuration options.
+Description: This plugin helps you use Knight Lab's Soundcite tool in WordPress. See the "media" settings page for configuration options.
 Version: 0.1
 Author: Northwestern University Knight Lab and Paul Schreiber
 Author URI: http://knightlab.northwestern.edu
@@ -50,14 +50,20 @@ class Soundcite {
 					array( get_called_class(), 'soundcloud_field_cb' ),
 					'media',
 					'soundcite_settings_section',
-				array( 'label_for' => 'soundcite_soundcloud_client_id' ) );
+					array(
+						'label_for' => 'soundcite_soundcloud_client_id',
+					)
+				);
 					add_settings_field(
 						'soundcite_background_color',
 						'Background Color for Clips',
 						array( get_called_class(), 'bgcolor_field_cb' ),
 						'media',
 						'soundcite_settings_section',
-					array( 'label_for' => 'soundcite_background_color' ) );
+						array(
+							'label_for' => 'soundcite_background_color',
+						)
+					);
 
 	}
 
@@ -80,11 +86,11 @@ class Soundcite {
 			<strong>How to get a SoundCloud client ID</strong>
 		</p>
 		<ul style="list-style-type: disc; padding-left: 3em;">
-	    <li>Go to <a href="https://developers.soundcloud.com/" target="_blank">https://developers.soundcloud.com/</a></li>
-	    <li>Click "Register a new application</li>
-	    <li>Fill in the application for and click "Register"</li>
-	    <li>Copy the "Client ID" field. This is your API key</li>
-	    <li>Be sure to save the app</li>
+		<li>Go to <a href="https://developers.soundcloud.com/" target="_blank">https://developers.soundcloud.com/</a></li>
+		<li>Click "Register a new application</li>
+		<li>Fill in the application for and click "Register"</li>
+		<li>Copy the "Client ID" field. This is your API key</li>
+		<li>Be sure to save the app</li>
 		</ul>
 		<?php
 	}
