@@ -34,37 +34,35 @@ class Soundcite {
 	}
 
 	public static function admin_init() {
+		register_setting( 'media', 'soundcite_soundcloud_client_id', 'sanitize_text_field' );
+		register_setting( 'media', 'soundcite_background_color', 'sanitize_hex_color' );
 
-				register_setting( 'media', 'soundcite_soundcloud_client_id', 'sanitize_text_field' );
-				register_setting( 'media', 'soundcite_background_color', 'sanitize_hex_color' );
-
-				add_settings_section(
-					'soundcite_settings_section',
-					'Knight Lab Soundcite Settings',
-					array( get_called_class(), 'settings_section_cb' ),
-					'media'
-				);
-				add_settings_field(
-					'soundcite_soundcloud_client_id',
-					'Sound Cloud Client ID',
-					array( get_called_class(), 'soundcloud_field_cb' ),
-					'media',
-					'soundcite_settings_section',
-					array(
-						'label_for' => 'soundcite_soundcloud_client_id',
-					)
-				);
-					add_settings_field(
-						'soundcite_background_color',
-						'Background Color for Clips',
-						array( get_called_class(), 'bgcolor_field_cb' ),
-						'media',
-						'soundcite_settings_section',
-						array(
-							'label_for' => 'soundcite_background_color',
-						)
-					);
-
+		add_settings_section(
+			'soundcite_settings_section',
+			'Knight Lab Soundcite Settings',
+			array( get_called_class(), 'settings_section_cb' ),
+			'media'
+		);
+		add_settings_field(
+			'soundcite_soundcloud_client_id',
+			'Sound Cloud Client ID',
+			array( get_called_class(), 'soundcloud_field_cb' ),
+			'media',
+			'soundcite_settings_section',
+			array(
+				'label_for' => 'soundcite_soundcloud_client_id',
+			)
+		);
+		add_settings_field(
+			'soundcite_background_color',
+			'Background Color for Clips',
+			array( get_called_class(), 'bgcolor_field_cb' ),
+			'media',
+			'soundcite_settings_section',
+			array(
+				'label_for' => 'soundcite_background_color',
+			)
+		);
 	}
 
 	public static function settings_section_cb() {
