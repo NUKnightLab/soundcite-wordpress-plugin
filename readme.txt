@@ -3,7 +3,7 @@ Contributors: paulschreiber, KnightLab, joegermuska
 Tags: soundcite, audio, soundcloud, knightlab
 Requires at least: 4.7.5
 Tested up to: 4.8
-Stable tag: trunk
+Stable tag: 0.9.0
 License: Mozilla Public License 2.0
 License URI: https://opensource.org/licenses/MPL-2.0
 
