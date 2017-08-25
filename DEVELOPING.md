@@ -1,14 +1,25 @@
-We welcome contributions to this code. It's probably a good idea to start a
-discussion around new features or bugs in [GitHub issues](https://github.com/NUKnightLab/soundcite/issues) before investing too
-much time, just to make sure that your approach is in line with the team's
-intentions for the project.
+We welcome contributions to this code. It's probably a good idea to start a discussion around new features or bugs in [GitHub issues](https://github.com/NUKnightLab/soundcite/issues) before investing too much time, just to make sure that your approach is in line with the team's intentions for the project.
 
-To keep the code tidy, we use PHP code linting formatting tools. (details could use improvement)
+To keep the code tidy, we use PHP code linting tools.
 
-You need to install PHP_CodeSniffer. (You may also need to install PECL and PEAR for installing PHP libraries and tools. If you do, [This Stack Overflow post](sudo php /usr/lib/php/install-pear-nozlib.phar -d /usr/local/lib/php -b /usr/local/bin) may be helpful for macOS users.)
+### Install PEAR
 
-(Depending on details, you may need to create `/etc/php.ini` or edit it to add
-```include_path=".:/usr/local/lib/php" ```
+If you haven't already done so, install PECL and PEAR for installing PHP libraries and tools. [This Stack Overflow post](https://stackoverflow.com/questions/32893056/installing-pecl-and-pear-on-os-x-10-11-el-capitan-or-macos-10-12-sierra) contains instructions for macOS users.)
+```sudo php /usr/lib/php/install-pear-nozlib.phar -d /usr/local/lib/php -b /usr/local/bin```
+
+### Set your PHP `include_path`
+
+If `php.ini` doesn't exist, create it:
+
+    sudo cp /etc/php.ini.default /etc/php.ini
+
+Edit `php.ini` so `include_path` contains PEAR's path:
+
+    include_path=".:/usr/local/lib/php"
+
+### Install PHP CodeSniffer
+
+    sudo pear install PHP_CodeSniffer
 
 ### Install coding standards
 
@@ -26,4 +37,4 @@ alias vipcs='phpcs -p -s -v --colors --standard=WordPress-VIP'
 alias vipcbf='phpcbf --standard=WordPress-VIP'
 ```
 
-Then later, when you want to make sure your code is sticking with the plan, use these two commands to check it and fix it. Remember you must specify the target directory for each command.
+Before you commit code, use these two commands to check it and fix it. Remember you must specify the target file or directory for each command.
