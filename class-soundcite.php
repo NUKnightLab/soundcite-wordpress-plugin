@@ -101,6 +101,9 @@ class Soundcite {
 		wp_enqueue_style( 'soundcite', 'https://cdn.knightlab.com/libs/soundcite/latest/css/player.css' );
 	}
 
+	/**
+	 * Output SOUNDCITE_CONFIG data
+	 */
 	public static function soundcite_config() {
 		self::enqueue_scripts();
 
@@ -109,27 +112,15 @@ class Soundcite {
 		$client_id = get_option( 'soundcite_soundcloud_client_id' );
 		$color = get_option( 'soundcite_background_color' );
 
-		self::render_soundcite_config( $client_id, $color );
-	}
-
-	public static function render_soundcite_config( $client_id, $color ) {
-		if ( $client_id || $color ) {
-			$script = 'var SOUNDCITE_CONFIG = {';
-
-			if ( $client_id ) {
-				$script .= "soundcloud_client_id: '$client_id'";
-			}
-			if ( $client_id && $color ) {
-				$script .= ',';
-			}
-			if ( $color ) {
-				$script .= "background_color: '$color'\n";
-			}
-
-			$script .= "};\n";
-			wp_add_inline_script( 'soundcite', $script );
+		if ( $client_id ) {
+			$config['soundcloud_client_id'] = $client_id;
 		}
 
+		if ( $color ) {
+			$config['background_color'] = $color;
+		}
+
+		wp_localize_script( 'soundcite', 'SOUNDCITE_CONFIG', $config );
 	}
 
 	/**
