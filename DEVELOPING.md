@@ -5,7 +5,7 @@ intentions for the project.
 
 To keep the code tidy, we use PHP code linting formatting tools. (details could use improvement)
 
-You need to install PHP_CodeSniffer. (You may also need to install PECL and PEAR for installing PHP libraries and tools. If you do, [This Stack Overflow post](sudo php /usr/lib/php/install-pear-nozlib.phar -d /usr/local/lib/php -b /usr/local/bin) may be helpful for Mac OX users.)
+You need to install PHP_CodeSniffer. (You may also need to install PECL and PEAR for installing PHP libraries and tools. If you do, [This Stack Overflow post](sudo php /usr/lib/php/install-pear-nozlib.phar -d /usr/local/lib/php -b /usr/local/bin) may be helpful for macOS users.)
 
 (Depending on details, you may need to create `/etc/php.ini` or edit it to add
 ```include_path=".:/usr/local/lib/php" ```
